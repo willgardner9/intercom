@@ -34,28 +34,24 @@ public class IntercomPlugin: CAPPlugin {
         let attributes = ICMUserAttributes()
         
         if ((email) != nil) {
-            attributes.email = email
-            Intercom.loginUser(with: attributes) { result in
-                switch result {
-                case .success: call.resolve()
-                case .failure(let error): call.reject("Error logging in: \(error.localizedDescription)")
-                }
-            }
+            attributes.email = email ?? ""
+            Intercom.registerUser(withEmail: attributes.email!)
+            //todo:
+            //call.resolve() ?
+            //error handling?
         }
         
         if ((userId) != nil) {
-            attributes.userId = userId
-            Intercom.loginUser(with: attributes) { result in
-                switch result {
-                case .success: call.resolve()
-                case .failure(let error): call.reject("Error logging in: \(error.localizedDescription)")
-                }
-            }
+            attributes.userId = userId ?? ""
+            Intercom.registerUser(withUserId: attributes.userId!)
+            //todo:
+            //call.resolve() ?
+            //error handling?
         }
     }
     
     @objc func registerUnidentifiedUser(_ call: CAPPluginCall) {
-        Intercom.loginUnidentifiedUser()
+        Intercom.registerUnidentifiedUser()
         call.resolve()
     }
     
